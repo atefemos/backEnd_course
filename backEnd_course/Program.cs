@@ -14,6 +14,9 @@ builder.Services.AddHttpLogging(logging =>
 builder.Services.AddAuthentication();
 builder.Services.AddAuthorization();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // builder.Services.AddSingleton<IMyService, MyService>();  // Singleton
 // builder.Services.AddScoped<IMyService, MyService>();    // Scoped
 builder.Services.AddTransient<IMyService, MyService>();   // Transient
@@ -34,6 +37,8 @@ if (!app.Environment.IsDevelopment())
 else
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseAuthentication();
@@ -87,6 +92,6 @@ app.MapGet("/", (IMyService myService) =>
 {
     myService.LogCreation("Root");
     return Results.Ok("Check the console for service creation logs.");
-});
+}).ExcludeFromDescription();
 
 app.Run();
